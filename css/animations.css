@@ -1,0 +1,52 @@
+/* ============================================================
+   FileDrive Portal — animations.css
+   Keyframe animations & entrance effects
+   ============================================================ */
+
+/* ── Row Entrance Animation ───────────────────────────────── */
+@keyframes row-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Applied per-row via JS data-index for staggered effect */
+.file-row {
+  animation: row-in 0.4s ease both;
+}
+
+.file-row:nth-child(1) { animation-delay: 0.05s; }
+.file-row:nth-child(2) { animation-delay: 0.10s; }
+.file-row:nth-child(3) { animation-delay: 0.15s; }
+.file-row:nth-child(4) { animation-delay: 0.20s; }
+.file-row:nth-child(5) { animation-delay: 0.25s; }
+.file-row:nth-child(6) { animation-delay: 0.30s; }
+.file-row:nth-child(7) { animation-delay: 0.35s; }
+.file-row:nth-child(8) { animation-delay: 0.40s; }
+
+/* ── Stats Card Entrance ──────────────────────────────────── */
+@keyframes card-in {
+  from { opacity: 0; transform: translateY(16px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0)    scale(1); }
+}
+
+.stat-card {
+  animation: card-in 0.5s ease both;
+}
+
+.stat-card:nth-child(1) { animation-delay: 0.0s; }
+.stat-card:nth-child(2) { animation-delay: 0.08s; }
+.stat-card:nth-child(3) { animation-delay: 0.16s; }
+
+/* ── Header fade-in ───────────────────────────────────────── */
+@keyframes fade-down {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.site-header { animation: fade-down 0.4s ease both; }

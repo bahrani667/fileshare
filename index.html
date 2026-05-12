@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- ============================================================
+       FileDrive Portal — index.html
+       A modern HFS-style file download landing page for GitHub Pages
+       Files are served via Google Drive direct-download links.
+
+       HOW TO USE:
+       1. Upload your files to Google Drive
+       2. Share each file → "Anyone with the link"
+       3. Copy the File ID from the share URL:
+          https://drive.google.com/file/d/FILE_ID/view
+       4. Paste FILE_IDs into js/main.js → FILES array
+       ============================================================ -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+  <!-- ── SEO ─────────────────────────────────────────────────── -->
+  <title>Proxmox ISO — FileDrive Portal</title>
+  <meta name="description"
+    content="Download Proxmox Virtual Environment 8.4-1 ISO installer. Hosted on Google Drive." />
+  <meta name="keywords" content="file download, ISO download, Google Drive, Windows ISO, Ubuntu ISO" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://YOUR_USERNAME.github.io/YOUR_REPO/" />
+
+  <!-- ── Open Graph / Social Preview ─────────────────────────── -->
+  <meta property="og:type"        content="website" />
+  <meta property="og:title"       content="FileDrive Portal — File Downloads" />
+  <meta property="og:description" content="Fast file downloads hosted via Google Drive." />
+  <meta property="og:url"         content="https://YOUR_USERNAME.github.io/YOUR_REPO/" />
+
+  <!-- ── Favicon (emoji fallback, replace with real icon) ────── -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📁</text></svg>" />
+
+  <!-- ── Fonts (preconnect for speed) ────────────────────────── -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <!-- ── Stylesheets ──────────────────────────────────────────── -->
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+</head>
+
+<body>
+
+  <!-- ════════════════════════════════════════════════════════════
+       SITE HEADER
+  ════════════════════════════════════════════════════════════ -->
+  <header class="site-header" role="banner">
+    <div class="header-inner">
+
+      <!-- Logo — EVE-NG Images portal -->
+      <a href="/" class="logo-area" aria-label="FileDrive Portal Home">
+        <div class="logo-icon" aria-hidden="true">📦</div>
+        <div class="logo-text">
+          <span class="logo-name">FileDrive Portal</span>
+          <span class="logo-tagline">Direct file downloads via Google Drive</span>
+        </div>
+      </a>
+
+      <!-- Live status indicator -->
+      <div class="header-meta" aria-label="Server status">
+        <span class="status-dot" aria-hidden="true"></span>
+        <span>All files available</span>
+      </div>
+
+    </div>
+  </header><!-- /site-header -->
+
+
+  <!-- ════════════════════════════════════════════════════════════
+       MAIN CONTENT
+  ════════════════════════════════════════════════════════════ -->
+  <main class="main-content" role="main">
+    <div class="page-wrapper">
+
+      <!-- ── Breadcrumb / Path Bar ─────────────────────────── -->
+      <nav class="path-bar" aria-label="Current path">
+        <span aria-hidden="true">🏠</span>
+        <span aria-hidden="true">/</span>
+        <span class="path-current">public</span>
+        <span aria-hidden="true">/</span>
+        <span class="path-current">downloads</span>
+      </nav>
+
+      <!-- ── Stats Strip ──────────────────────────────────── -->
+      <div class="stats-strip" role="region" aria-label="Repository statistics">
+
+        <div class="stat-card">
+          <span class="stat-icon" aria-hidden="true">📦</span>
+          <div class="stat-info">
+            <span class="stat-value" id="stat-count">1</span>
+            <span class="stat-label">Files Available</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <span class="stat-icon" aria-hidden="true">💾</span>
+          <div class="stat-info">
+            <span class="stat-value" id="stat-size">1.46 GB</span>
+            <span class="stat-label">Total Size</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <span class="stat-icon" aria-hidden="true">🖥️</span>
+          <div class="stat-info">
+            <span class="stat-value">Proxmox</span>
+            <span class="stat-label">Platform</span>
+          </div>
+        </div>
+
+      </div><!-- /stats-strip -->
+
+
+      <!-- ── Section Header + Search ──────────────────────── -->
+      <div class="section-header">
+        <h1 class="section-title">Available Files</h1>
+
+        <div class="search-wrap" role="search">
+          <span class="search-icon" aria-hidden="true">🔍</span>
+          <input
+            type="search"
+            id="search-input"
+            class="search-input"
+            placeholder="Filter files…"
+            aria-label="Search files"
+            autocomplete="off"
+            spellcheck="false"
+          />
+        </div>
+      </div>
+
+
+      <!-- ── File Table ────────────────────────────────────── -->
+      <!--
+        STRUCTURE NOTE:
+        - Table rows are rendered dynamically by js/main.js
+        - To add/remove files, edit the FILES array in js/main.js
+        - Each row has data-label attrs for mobile card layout
+      -->
+      <div class="file-table-wrapper" role="region" aria-label="File list">
+        <table class="file-table" aria-label="Downloadable files">
+          <thead>
+            <tr>
+              <!-- data-sort enables click-to-sort via main.js -->
+              <th scope="col" data-sort="name">
+                <div class="th-inner">
+                  File Name <span class="sort-icon" aria-hidden="true">⇅</span>
+                </div>
+              </th>
+              <th scope="col" data-sort="size">
+                <div class="th-inner">
+                  Size <span class="sort-icon" aria-hidden="true">⇅</span>
+                </div>
+              </th>
+              <th scope="col" class="col-type">Type</th>
+              <!-- col-desc is hidden on screens < 900px via CSS -->
+              <th scope="col" class="col-desc">Description</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="file-table-body">
+            <!-- Rows inserted here by main.js → populateTable() -->
+            <!-- Fallback for JS-disabled browsers: -->
+            <tr>
+              <td colspan="5" style="text-align:center;padding:32px;color:var(--text-muted);">
+                Loading files… (requires JavaScript)
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- No search results message -->
+        <div class="no-results" id="no-results" role="status" aria-live="polite">
+          <div class="nr-icon" aria-hidden="true">🔎</div>
+          <p>No files match your search.</p>
+        </div>
+
+      </div><!-- /file-table-wrapper -->
+
+
+      <!-- ── Usage Notice ──────────────────────────────────── -->
+      <p style="margin-top:20px;font-size:0.8rem;color:var(--text-muted);text-align:center;">
+        ⚡ Files are hosted on Google Drive.
+        Large files may display a virus-scan warning — click <em>"Download anyway"</em> to proceed.
+      </p>
+
+    </div><!-- /page-wrapper -->
+  </main><!-- /main-content -->
+
+
+  <!-- ════════════════════════════════════════════════════════════
+       SITE FOOTER
+  ════════════════════════════════════════════════════════════ -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-inner">
+      <span>© 2025 FileDrive Portal · Hosted on GitHub Pages</span>
+      <nav class="footer-links" aria-label="Footer links">
+        <a href="https://github.com/YOUR_USERNAME/YOUR_REPO" rel="noopener noreferrer">GitHub</a>
+        <a href="mailto:your@email.com">Contact</a>
+      </nav>
+    </div>
+  </footer>
+
+  <!-- ── Scripts ──────────────────────────────────────────── -->
+  <!-- main.js loaded at end of body for best performance -->
+  <script src="js/main.js" defer></script>
+
+</body>
+</html>

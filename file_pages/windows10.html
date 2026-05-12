@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<!--
+  file_pages/windows10.html — Individual redirect page for Windows10_v22H2.iso
+  This page gives a clean URL: /file_pages/windows10.html
+  It auto-redirects to the Google Drive download after a short countdown.
+
+  TO USE:
+  1. Replace FILE_ID below with the actual Google Drive File ID
+  2. Share the file on Google Drive as "Anyone with the link"
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Downloading Windows10_v22H2.iso — FileDrive Portal</title>
+  <meta name="description" content="Your download of Windows10_v22H2.iso (4 GB) will begin shortly." />
+  <meta name="robots" content="noindex, follow" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📁</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <style>
+    /* ── Redirect page specific styles ── */
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .redirect-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-xl);
+      padding: 48px 40px;
+      max-width: 480px;
+      width: 100%;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+      animation: card-in 0.5s ease both;
+    }
+
+    @keyframes card-in {
+      from { opacity: 0; transform: translateY(20px) scale(0.97); }
+      to   { opacity: 1; transform: translateY(0)    scale(1); }
+    }
+
+    .rd-icon { font-size: 3.5rem; margin-bottom: 20px; display: block; }
+
+    .rd-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+
+    .rd-filename {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem;
+      color: var(--text-accent);
+      margin-bottom: 6px;
+    }
+
+    .rd-size {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 28px;
+    }
+
+    /* Countdown circle */
+    .countdown-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .countdown-ring {
+      position: relative;
+      width: 64px;
+      height: 64px;
+    }
+
+    .countdown-ring svg {
+      transform: rotate(-90deg);
+      width: 64px;
+      height: 64px;
+    }
+
+    .countdown-ring circle {
+      fill: none;
+      stroke-width: 4;
+      r: 28;
+      cx: 32;
+      cy: 32;
+    }
+
+    .ring-bg   { stroke: var(--border-color); }
+    .ring-fill {
+      stroke: var(--accent-blue);
+      stroke-dasharray: 176; /* 2π × 28 ≈ 176 */
+      stroke-dashoffset: 0;
+      stroke-linecap: round;
+      transition: stroke-dashoffset 1s linear;
+    }
+
+    .countdown-number {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .countdown-label {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    /* Manual download button */
+    .rd-manual {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      background: var(--accent-green);
+      color: #fff;
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-decoration: none;
+      transition: background var(--transition-fast), box-shadow var(--transition-base);
+      margin-bottom: 16px;
+    }
+
+    .rd-manual:hover {
+      background: var(--accent-green-h);
+      box-shadow: 0 0 16px var(--glow-green);
+      color: #fff;
+    }
+
+    .rd-back {
+      display: inline-block;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color var(--transition-fast);
+    }
+
+    .rd-back:hover { color: var(--text-accent); }
+
+    /* GDrive notice */
+    .gdrive-notice {
+      margin-top: 24px;
+      padding: 10px 14px;
+      background: rgba(210,153,34,0.08);
+      border: 1px solid rgba(210,153,34,0.25);
+      border-radius: var(--radius-md);
+      font-size: 0.78rem;
+      color: #e3b341;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="redirect-card">
+    <span class="rd-icon" aria-hidden="true">💿</span>
+    <h1 class="rd-title">Your download is starting…</h1>
+    <p class="rd-filename">Windows10_v22H2.iso</p>
+    <p class="rd-size">4.00 GB · ISO Disc Image</p>
+
+    <!-- Countdown animation -->
+    <div class="countdown-wrap">
+      <div class="countdown-ring" aria-hidden="true">
+        <svg viewBox="0 0 64 64">
+          <circle class="ring-bg"   cx="32" cy="32" r="28" />
+          <circle class="ring-fill" cx="32" cy="32" r="28" id="ring-fill" />
+        </svg>
+        <div class="countdown-number" id="countdown-num">5</div>
+      </div>
+      <span class="countdown-label" id="countdown-label">Redirecting in 5 seconds…</span>
+    </div>
+
+    <!-- Manual trigger -->
+    <a
+      href="https://drive.google.com/uc?export=download&id=YOUR_GOOGLE_DRIVE_FILE_ID_1"
+      class="rd-manual"
+      id="dl-link"
+      download
+    >
+      ⬇ Download now
+    </a>
+    <br />
+    <a href="../index.html" class="rd-back">← Back to file list</a>
+
+    <!-- Google Drive virus-scan warning notice -->
+    <div class="gdrive-notice">
+      ⚠ Large files may show a Google virus-scan warning.
+      Click <strong>"Download anyway"</strong> to proceed — the file is safe.
+    </div>
+  </div>
+
+  <script>
+    // ── Auto-redirect countdown ──────────────────────────────
+    (function () {
+      const FILE_URL  = 'https://drive.google.com/uc?export=download&id=YOUR_GOOGLE_DRIVE_FILE_ID_1';
+      const DURATION  = 5; // seconds
+      const CIRCUMF   = 176; // 2π × r=28
+
+      const numEl   = document.getElementById('countdown-num');
+      const labelEl = document.getElementById('countdown-label');
+      const ring    = document.getElementById('ring-fill');
+
+      let remaining = DURATION;
+
+      // Kick off the file download immediately in the background
+      window.location.href = FILE_URL;
+
+      const tick = setInterval(() => {
+        remaining--;
+        if (numEl)   numEl.textContent = remaining;
+        if (labelEl) labelEl.textContent = `Redirecting in ${remaining} second${remaining !== 1 ? 's' : ''}…`;
+        if (ring) {
+          const offset = CIRCUMF - (CIRCUMF * (DURATION - remaining) / DURATION);
+          ring.style.strokeDashoffset = offset;
+        }
+
+        if (remaining <= 0) {
+          clearInterval(tick);
+          if (labelEl) labelEl.textContent = 'Download started!';
+        }
+      }, 1000);
+    })();
+  </script>
+
+</body>
+</html>

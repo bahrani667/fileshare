@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<!--
+  file_pages/ubuntu2204.html — Individual redirect page for Ubuntu_22.04.iso
+  Replace YOUR_GOOGLE_DRIVE_FILE_ID_2 with the actual Google Drive File ID.
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Downloading Ubuntu_22.04.iso — FileDrive Portal</title>
+  <meta name="description" content="Your download of Ubuntu_22.04.iso (3 GB) will begin shortly." />
+  <meta name="robots" content="noindex, follow" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📁</text></svg>" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      text-align: center;
+      padding: 20px;
+    }
+    .redirect-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-xl);
+      padding: 48px 40px;
+      max-width: 480px;
+      width: 100%;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+      animation: card-in 0.5s ease both;
+    }
+    @keyframes card-in {
+      from { opacity: 0; transform: translateY(20px) scale(0.97); }
+      to   { opacity: 1; transform: translateY(0)    scale(1); }
+    }
+    .rd-icon  { font-size: 3.5rem; margin-bottom: 20px; display: block; }
+    .rd-title { font-size: 1.3rem; font-weight: 700; color: var(--text-primary); margin-bottom: 8px; }
+    .rd-filename { font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; color: var(--text-accent); margin-bottom: 6px; }
+    .rd-size  { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 28px; }
+    .countdown-wrap { display: flex; flex-direction: column; align-items: center; gap: 12px; margin-bottom: 28px; }
+    .countdown-ring { position: relative; width: 64px; height: 64px; }
+    .countdown-ring svg { transform: rotate(-90deg); width: 64px; height: 64px; }
+    .countdown-ring circle { fill: none; stroke-width: 4; r: 28; cx: 32; cy: 32; }
+    .ring-bg   { stroke: var(--border-color); }
+    .ring-fill { stroke: var(--accent-blue); stroke-dasharray: 176; stroke-dashoffset: 0; stroke-linecap: round; transition: stroke-dashoffset 1s linear; }
+    .countdown-number { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 1.1rem; font-weight: 700; color: var(--text-primary); }
+    .countdown-label  { font-size: 0.82rem; color: var(--text-muted); }
+    .rd-manual { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; background: var(--accent-green); color: #fff; border-radius: var(--radius-md); font-weight: 600; font-size: 0.9rem; text-decoration: none; transition: background var(--transition-fast), box-shadow var(--transition-base); margin-bottom: 16px; }
+    .rd-manual:hover { background: var(--accent-green-h); box-shadow: 0 0 16px var(--glow-green); color: #fff; }
+    .rd-back { display: inline-block; font-size: 0.8rem; color: var(--text-muted); text-decoration: none; }
+    .rd-back:hover { color: var(--text-accent); }
+    .gdrive-notice { margin-top: 24px; padding: 10px 14px; background: rgba(210,153,34,0.08); border: 1px solid rgba(210,153,34,0.25); border-radius: var(--radius-md); font-size: 0.78rem; color: #e3b341; line-height: 1.5; }
+  </style>
+</head>
+<body>
+
+  <div class="redirect-card">
+    <span class="rd-icon" aria-hidden="true">🐧</span>
+    <h1 class="rd-title">Your download is starting…</h1>
+    <p class="rd-filename">Ubuntu_22.04.iso</p>
+    <p class="rd-size">3.00 GB · ISO Disc Image</p>
+
+    <div class="countdown-wrap">
+      <div class="countdown-ring" aria-hidden="true">
+        <svg viewBox="0 0 64 64">
+          <circle class="ring-bg"   cx="32" cy="32" r="28" />
+          <circle class="ring-fill" cx="32" cy="32" r="28" id="ring-fill" />
+        </svg>
+        <div class="countdown-number" id="countdown-num">5</div>
+      </div>
+      <span class="countdown-label" id="countdown-label">Redirecting in 5 seconds…</span>
+    </div>
+
+    <a
+      href="https://drive.google.com/uc?export=download&id=YOUR_GOOGLE_DRIVE_FILE_ID_2"
+      class="rd-manual"
+      id="dl-link"
+      download
+    >
+      ⬇ Download now
+    </a>
+    <br />
+    <a href="../index.html" class="rd-back">← Back to file list</a>
+
+    <div class="gdrive-notice">
+      ⚠ Large files may show a Google virus-scan warning.
+      Click <strong>"Download anyway"</strong> to proceed.
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const FILE_URL = 'https://drive.google.com/uc?export=download&id=YOUR_GOOGLE_DRIVE_FILE_ID_2';
+      const DURATION = 5;
+      const CIRCUMF  = 176;
+      const numEl    = document.getElementById('countdown-num');
+      const labelEl  = document.getElementById('countdown-label');
+      const ring     = document.getElementById('ring-fill');
+      let remaining  = DURATION;
+
+      window.location.href = FILE_URL;
+
+      const tick = setInterval(() => {
+        remaining--;
+        if (numEl)   numEl.textContent = remaining;
+        if (labelEl) labelEl.textContent = `Redirecting in ${remaining} second${remaining !== 1 ? 's' : ''}…`;
+        if (ring)    ring.style.strokeDashoffset = CIRCUMF - (CIRCUMF * (DURATION - remaining) / DURATION);
+        if (remaining <= 0) { clearInterval(tick); if (labelEl) labelEl.textContent = 'Download started!'; }
+      }, 1000);
+    })();
+  </script>
+</body>
+</html>
