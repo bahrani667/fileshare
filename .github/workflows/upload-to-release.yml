@@ -1,0 +1,77 @@
+name: 📦 Upload Files to GitHub Releases
+
+# ──────────────────────────────────────────────────────────────
+#  Trigger: manual only (Actions → Run workflow)
+#  What it does:
+#    1. Downloads every file listed in FILES_MANIFEST from Google
+#       Drive using gdown (which handles the virus-scan bypass).
+#    2. Creates / updates a GitHub Release and attaches the
+#       downloaded files as release assets.
+#  Result:
+#    Users download directly from GitHub CDN — no Google Drive
+#    virus-scan warning, no redirects, full speed.
+# ──────────────────────────────────────────────────────────────
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: 'Release tag (e.g. files-v1). Re-run with same tag to update assets.'
+        required: true
+        default: 'files-v1'
+      release_name:
+        description: 'Human-readable release title'
+        required: false
+        default: 'File Repository — Direct Downloads'
+
+jobs:
+  upload-files:
+    name: Download from Drive → Upload to Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write      # needed to create releases and upload assets
+
+    steps:
+      # ── 1. Checkout (needed for GITHUB_TOKEN context) ────────
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # ── 2. Install gdown ─────────────────────────────────────
+      #  gdown automatically handles Google Drive's virus-scan
+      #  confirmation by extracting the token from the HTML page.
+      - name: Install gdown
+        run: pip install --quiet gdown
+
+      # ── 3. Download files from Google Drive ──────────────────
+      #  Add one line per file:
+      #    gdown 'DRIVE_FILE_ID' -O 'output-filename'
+      - name: Download files from Google Drive
+        run: |
+          echo "=== Starting Google Drive downloads ==="
+
+          gdown '10s4TYw4MXx7WF-nfU6fmUNyYzIap2yqQ' -O 'proxmox-ve_8.4-1.iso'
+
+          # ── add more files below as needed ──────────────────
+          # gdown 'ANOTHER_DRIVE_ID' -O 'another-file.zip'
+
+          echo ""
+          echo "=== Downloaded files ==="
+          ls -lh
+
+      # ── 4. Create / update GitHub Release with assets ────────
+      - name: Upload assets to GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.event.inputs.tag_name }}
+          name: "${{ github.event.inputs.release_name }}"
+          body: |
+            ## 📦 Direct Download Links
+
+            Files are served directly from GitHub CDN.
+            **No virus-scan warnings. No redirects. Direct save.**
+
+            > Generated automatically by GitHub Actions on ${{ github.run_number }}.
+          files: |
+            proxmox-ve_8.4-1.iso
+          token: ${{ secrets.GITHUB_TOKEN }}
+          make_latest: true

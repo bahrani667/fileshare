@@ -7,6 +7,9 @@
   'use strict';
 
   /* ── File data — Folder: file (Google Drive) ── */
+  // RELEASE_TAG: files-v1 — update directUrl after running the GitHub Actions workflow
+  const RELEASE_BASE = 'https://github.com/bahrani667/fileshare/releases/download/files-v1';
+
   const FILES = [
     {
       id: 'file-0',
@@ -16,20 +19,24 @@
       sizeRaw: 1.46,
       type: 'iso',
       driveId: '10s4TYw4MXx7WF-nfU6fmUNyYzIap2yqQ',
+      // Set after running .github/workflows/upload-to-release.yml
+      directUrl: `${RELEASE_BASE}/proxmox-ve_8.4-1.iso`,
     },
   ];
 
   /* ── Helpers ──────────────────────────────────────────────────────────── */
 
   /**
-   * Build a direct-download URL using drive.usercontent.google.com.
-   * - confirm=t  → bypass the "file too large for virus scan" warning page
-   * - export=download → force download instead of preview
-   * @param {string} id  Google Drive file ID
+   * Return the best available download URL for a file.
+   * Priority: directUrl (GitHub Release CDN) > Google Drive fallback.
+   * GitHub Release assets download instantly with no virus-scan page.
+   * @param {object} file
    * @returns {string}
    */
-  function driveUrl(id) {
-    return `https://drive.usercontent.google.com/download?id=${id}&export=download&authuser=0&confirm=t`;
+  function getDownloadUrl(file) {
+    if (file.directUrl) return file.directUrl;
+    // Fallback: Google Drive (may show virus-scan warning for large files)
+    return `https://drive.usercontent.google.com/download?id=${file.driveId}&export=download&authuser=0&confirm=t`;
   }
 
   /**
@@ -97,7 +104,7 @@
    */
   function renderRow(file) {
     const info = typeInfo(file.type);
-    const url = driveUrl(file.driveId);
+    const url = getDownloadUrl(file);
     const bw = barWidth(file.sizeRaw);
 
     const tr = document.createElement('tr');
