@@ -22,14 +22,25 @@
   /* ── Helpers ──────────────────────────────────────────────────────────── */
 
   /**
-   * Build a direct-download URL using drive.usercontent.google.com.
-   * Note: For files > 100MB, Google Drive requires a server-side bypass
-   * to skip the virus scan warning.
+   * Build the download URL.
+   * To completely bypass the Google Drive ">100MB Virus Scan" warning,
+   * you must use the Cloudflare Worker. Ganti 'WORKER_URL_ANDA_DISINI'
+   * dengan URL worker Anda setelah selesai dibuat.
+   * 
    * @param {string} id  Google Drive file ID
    * @returns {string}
    */
   function driveUrl(id) {
-    return `https://drive.usercontent.google.com/download?id=${id}&export=download&authuser=0&confirm=t`;
+    // CONTOH: const workerUrl = 'https://drive-bypass.bahrani.workers.dev';
+    const workerUrl = ''; // Kosongkan jika belum ada worker
+
+    if (workerUrl) {
+      // Menggunakan Cloudflare Worker untuk bypass virus scan
+      return `${workerUrl}/?id=${id}`;
+    } else {
+      // Bawaan Google Drive (akan muncul virus scan untuk file besar)
+      return `https://drive.usercontent.google.com/download?id=${id}&export=download&authuser=0&confirm=t`;
+    }
   }
 
   /**
