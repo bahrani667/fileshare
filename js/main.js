@@ -45,25 +45,23 @@
     const url = btn.dataset.url;
     const filename = btn.dataset.filename || '';
 
-    // Visual feedback: briefly show loading state
+    // Visual feedback
     const original = btn.innerHTML;
     btn.innerHTML = '<span class="btn-icon">⏳</span> Starting…';
     btn.disabled = true;
 
-    // Create a temporary hidden anchor and fire it
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = filename;        // hint the filename to browser
-    a.style.cssText = 'position:fixed;top:-9999px;left:-9999px;opacity:0;';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+    // Navigate current window to the download URL.
+    // Google Drive responds with Content-Disposition: attachment so the
+    // browser saves the file directly — no new tab, no redirect page.
+    // (The hidden-anchor + a.download trick is blocked by browsers for
+    //  cross-origin URLs due to CORS, so we use location.href instead.)
+    window.location.href = url;
 
-    // Restore button after short delay
+    // Restore button after a short delay (browser stays on same page)
     setTimeout(() => {
       btn.innerHTML = original;
       btn.disabled = false;
-    }, 1500);
+    }, 2000);
   };
 
   /**
