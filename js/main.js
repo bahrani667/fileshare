@@ -6,18 +6,13 @@
 (function () {
   'use strict';
 
-  /* ── File data — Folder: file (Google Drive) ── */
-  const FILES = [
-    {
-      id: 'file-0',
-      name: 'proxmox-ve_8.4-1.iso',
-      desc: 'Proxmox Virtual Environment 8.4-1 — Bootable ISO installer',
-      size: '1.46 GB',
-      sizeRaw: 1.46,
-      type: 'iso',
-      driveId: '10s4TYw4MXx7WF-nfU6fmUNyYzIap2yqQ',
-    },
-  ];
+  /* ── Configuration ── */
+  // URL Web App Google Apps Script yang mengambil daftar file dari Google Drive
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxuRTQ5RgEu6KZc_A-zhCSt_EBFAvu_17Q0-SCHRmGBUhrl8k5amDZ0LlDwlBfsfhgf/exec'; 
+
+  /* ── File data ── */
+  // Data ini akan diisi secara otomatis dari Google Drive
+  let FILES = [];
 
   /* ── Helpers ──────────────────────────────────────────────────────────── */
 
@@ -358,10 +353,36 @@
   });
 
   /* ── Init ─────────────────────────────────────────────────────────────── */
-  document.addEventListener('DOMContentLoaded', () => {
-    populateTable();
+  document.addEventListener('DOMContentLoaded', async () => {
     initSearch();
     initSort();
+
+    const tbody = document.getElementById('file-table-body');
+
+    if (!APPS_SCRIPT_URL) {
+      if (tbody) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:32px;color:var(--text-muted);">⚠️ URL Web App belum diatur di <code>main.js</code></td></tr>';
+      }
+      return;
+    }
+
+    try {
+      if (tbody) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:32px;color:var(--text-muted);"><span class="btn-icon">⏳</span> Sedang membaca Google Drive Anda...</td></tr>';
+      }
+
+      const response = await fetch(APPS_SCRIPT_URL);
+      if (!response.ok) throw new Error('Network response was not ok');
+      const data = await response.json();
+      
+      FILES = data.files || [];
+      populateTable();
+    } catch (error) {
+      console.error('Error fetching files:', error);
+      if (tbody) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:32px;color:#ff5555;">❌ Gagal mengambil data file. Pastikan URL Web App benar dan dapat diakses publik.</td></tr>';
+      }
+    }
   });
 
 })();
